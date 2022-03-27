@@ -1,0 +1,11 @@
+.header__text_link {
+  color: #a9a9a9;
+  cursor: pointer;
+}
+@media screen and (max-width: 424px) {
+  .header__text_link {
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+  }
+}

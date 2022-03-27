@@ -1,0 +1,10 @@
+.header__logout {
+  display: flex;
+  flex-direction: row;
+  column-gap: 24px;
+}
+@media screen and (max-width: 767px) {
+  .header__logout {
+    display: none;
+  }
+}

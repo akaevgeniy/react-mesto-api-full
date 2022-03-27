@@ -1,0 +1,16 @@
+.register__subtitle {
+  margin: 16px auto 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+}
+@media screen and (max-width: 424px) {
+  .register__subtitle {
+    margin-top: 20px;
+  }
+}
