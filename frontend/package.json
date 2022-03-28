@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/index.js",
-  "homepage": "https://github.com/akaevgeniy/react-mesto-api-full/frontend",
+  "homepage": "http://akaevgeniy.mesto.nomoredomains.work/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
