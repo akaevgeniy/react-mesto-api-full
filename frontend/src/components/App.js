@@ -122,7 +122,7 @@ function App() {
     Promise.all([api.getUserProfile(), api.getInitialCards()])
       .then(([userData, placeCards]) => {
         setCurrentUser(userData.data);
-        setCards(placeCards.data);
+        setCards(placeCards.data.reverse());
       })
       .catch((err) => parseError(err));
   }, []);
@@ -213,7 +213,7 @@ function App() {
     api
       .addNewCard({ name, link })
       .then((newPlace) => {
-        setCards([newPlace, ...cards]);
+        setCards([newPlace.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => parseError(err));
