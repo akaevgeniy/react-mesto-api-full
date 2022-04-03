@@ -26,6 +26,12 @@ app.use(requestLogger); // подключаем логгер запросов
 
 app.use(cors());
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
