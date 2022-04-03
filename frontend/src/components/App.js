@@ -193,7 +193,7 @@ function App() {
     api
       .updateUserProfile({ name, about })
       .then((userInfo) => {
-        setCurrentUser(userInfo);
+        setCurrentUser(userInfo.data);
         closeAllPopups();
       })
       .catch((err) => parseError(err));
@@ -203,7 +203,7 @@ function App() {
     api
       .updateAvatar(url)
       .then((userInfo) => {
-        setCurrentUser(userInfo);
+        setCurrentUser(userInfo.data);
         closeAllPopups();
       })
       .catch((err) => parseError(err));
