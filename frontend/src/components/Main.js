@@ -5,7 +5,6 @@ import Card from './Card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function Main(props) {
-  console.log(props.cards)
   //данные о пользователе, делаем подписку на контекст
   const currentUser = React.useContext(CurrentUserContext);
   //jsx разметка компонента Main
