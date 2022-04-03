@@ -7,7 +7,6 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 function Main(props) {
   //данные о пользователе, делаем подписку на контекст
   const currentUser = React.useContext(CurrentUserContext);
-
   //jsx разметка компонента Main
   return (
     <main className="content">

@@ -116,14 +116,13 @@ function App() {
     localStorage.removeItem('jwt');
     history.push('/sign-in');
   };
-
   //создаем эффект, изменяющий при монтировании стейты на данные из сервера
   useEffect(() => {
     //Загружаем информацию о пользователе и карточках с сервера, объединенно вызываем запросы с Api, обновляем стейты
     Promise.all([api.getUserProfile(), api.getInitialCards()])
       .then(([userData, placeCards]) => {
-        setCurrentUser(userData);
-        setCards(placeCards);
+        setCurrentUser(userData.data);
+        setCards(placeCards.data);
       })
       .catch((err) => parseError(err));
   }, []);
