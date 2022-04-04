@@ -92,7 +92,7 @@ class Api {
 }
 //Создаем и экспортируем экземпляр Api со ссылкой на сервер и данных об авторизации
 export default Api = new Api({
-  baseUrl: 'http://api.akaevgeniy.mesto.nomoredomains.work',
+  baseUrl: 'https://api.akaevgeniy.mesto.nomoredomains.work',
   authorization: 'Bearer ' + localStorage.getItem('jwt'),
   ContentType: 'application/json',
 });
