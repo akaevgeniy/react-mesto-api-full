@@ -37,13 +37,13 @@ module.exports.getUserId = (req, res, next) => {
 // контроллер для создания нового пользоватля, в тело передаются два параметра
 module.exports.createUser = (req, res, next) => {
   const {
-    email, password,
+    name, about, avatar, email, password,
   } = req.body;
 
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({
-      email, password: hash,
+      name, about, avatar, email, password: hash,
     }))
     .then((user) => {
       res.send({
