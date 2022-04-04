@@ -1,5 +1,6 @@
 const cardsRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 // импортируем контроллеры и добавляем их в качестве колбэков в методы роутов карточек
 const {
   getCards,
@@ -8,6 +9,13 @@ const {
   dislikeCard,
   likeCard,
 } = require('../controllers/cards');
+
+const validateURL = (value) => {
+  if (!validator.isURL(value, { require_protocol: true })) {
+    throw new Error('Неправильный формат ссылки');
+  }
+  return value;
+};
 
 cardsRouter.get('/cards', getCards);
 
@@ -21,7 +29,7 @@ cardsRouter.delete('/cards/:cardId', celebrate({
 cardsRouter.post('/cards', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/),
+    link: Joi.string().custom(validateURL).required(),
   }),
 }), createCard);
 

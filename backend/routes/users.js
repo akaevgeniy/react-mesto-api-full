@@ -1,5 +1,6 @@
 const userRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 // импортируем контроллеры и добавляем их в качестве колбэков в методы роутов пользователя
 const {
   getUsers,
@@ -8,6 +9,13 @@ const {
   updateAvatar,
   getCurrentUser,
 } = require('../controllers/users');
+
+const validateURL = (value) => {
+  if (!validator.isURL(value, { require_protocol: true })) {
+    throw new Error('Неправильный формат ссылки');
+  }
+  return value;
+};
 
 userRouter.get('/users', getUsers);
 
@@ -28,7 +36,7 @@ userRouter.patch('/users/me', celebrate({
 
 userRouter.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().pattern(/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/),
+    avatar: Joi.string().custom(validateURL).required(),
   }),
 }), updateAvatar);
 
