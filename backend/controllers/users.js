@@ -5,6 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-req-err');
 const ConflictError = require('../errors/conflict-err');
+const Unauthorized = require('../errors/unauth');
 
 // контроллер для получения всех пользоватлей
 module.exports.getUsers = (req, res, next) => {
@@ -127,7 +128,7 @@ module.exports.updateAvatar = (req, res, next) => {
     .catch(next);
 };
 // авторизация, пользуемся методом из схемы
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -138,11 +139,10 @@ module.exports.login = (req, res) => {
       // вернём токен
       res.send({ token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
-    });
+    .catch(() => {
+      throw new Unauthorized('Необходима авторизация');
+    })
+    .catch(next);
 };
 // контроллер для получения данных о текущем пользователе
 module.exports.getCurrentUser = (req, res, next) => {
