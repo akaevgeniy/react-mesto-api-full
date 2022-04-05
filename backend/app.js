@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 const auth = require('./middlewares/auth');
 const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
@@ -18,6 +19,13 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+
+const validateURL = (value) => {
+  if (!validator.isURL(value, { require_protocol: true })) {
+    throw new Error('Неправильный формат ссылки');
+  }
+  return value;
+};
 
 const app = express();
 app.use(express.json());
@@ -36,7 +44,7 @@ app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/),
+    avatar: Joi.string().custom(validateURL),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
