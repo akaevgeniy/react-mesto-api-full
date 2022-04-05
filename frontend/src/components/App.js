@@ -125,7 +125,7 @@ function App() {
         setCards(placeCards.data.reverse());
       })
       .catch((err) => parseError(err));
-  }, []);
+  }, [loggedIn]);
   //Функция для постановки/снятия лайка
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
