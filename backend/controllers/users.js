@@ -138,7 +138,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
       console.log(token);
       // вернём токен
-      res.send({ jwt: token });
+      res.send({ token });
     })
     .catch(() => {
       throw new Unauthorized('Необходима авторизация');
