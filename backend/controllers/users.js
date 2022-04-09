@@ -1,12 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-req-err');
 const ConflictError = require('../errors/conflict-err');
 const Unauthorized = require('../errors/unauth');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 // контроллер для получения всех пользоватлей
 module.exports.getUsers = (req, res, next) => {

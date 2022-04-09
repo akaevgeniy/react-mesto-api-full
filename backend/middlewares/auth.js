@@ -1,6 +1,7 @@
-const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const Unauthorized = require('../errors/unauth');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 // миддлвэр для авторизщации, задается для всех поступающих запросов
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
