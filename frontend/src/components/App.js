@@ -112,8 +112,13 @@ function App() {
   };
   //метод для выхода, удаляем jwt токен
   const onLogout = () => {
-    setLoggedIn(false);
     localStorage.removeItem('jwt');
+    setCurrentUser({});
+    setCards([]);
+    setUserInfo({
+      email: '',
+    });
+    setLoggedIn(false);
     history.push('/sign-in');
   };
   //создаем эффект, изменяющий при монтировании стейты на данные из сервера

@@ -136,7 +136,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       // создадим токен
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
-      console.log(token);
+      console.log('users controller->', token);
       // вернём токен
       res.send({ token });
     })
