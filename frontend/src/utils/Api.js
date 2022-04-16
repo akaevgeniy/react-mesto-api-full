@@ -1,8 +1,8 @@
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
-    this._authorization = options.authorization;
-    this._content_type = options.ContentType;
+    this.headers = options.headers;
+   
   }
   //выносим в отдельный метод проверку ответа от сервера
   _parseResponse(res) {
@@ -15,17 +15,17 @@ class Api {
   //публичный метод, загружающий с сервера информацию о карточках
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: {
-        authorization: this._authorization,
-      },
+      headers:  {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+       },
     }).then((res) => this._parseResponse(res));
   }
   //метод, загружающий информацию о пользователе
   getUserProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: {
-        authorization: this._authorization,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+       },
     }).then((res) => this._parseResponse(res));
   }
   //метод для изменения данных пользователя на сервере
@@ -33,9 +33,9 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this._authorization,
-        'Content-Type': this._content_type,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        ...this.headers
+       },
       body: JSON.stringify({
         name: name,
         about: about,
@@ -47,9 +47,9 @@ class Api {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._authorization,
-        'Content-Type': this._content_type,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        ...this.headers
+       },
       body: JSON.stringify({
         avatar: url,
       }),
@@ -60,9 +60,9 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this._authorization,
-        'Content-Type': this._content_type,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        ...this.headers
+       },
       body: JSON.stringify({
         name,
         link,
@@ -74,9 +74,9 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._authorization,
-        'Content-Type': this._content_type,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        ...this.headers
+       },
     }).then((res) => this._parseResponse(res));
   }
   //реализация PUT-запроса для постановки лайка или удаление лайка - отправляем DELETE-запрос
@@ -84,15 +84,17 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: isLiked ? 'DELETE' : 'PUT',
       headers: {
-        authorization: this._authorization,
-        'Content-Type': this._content_type,
-      },
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        ...this.headers
+       },
     }).then((res) => this._parseResponse(res));
   }
 }
+
 //Создаем и экспортируем экземпляр Api со ссылкой на сервер и данных об авторизации
 export default Api = new Api({
   baseUrl: 'https://api.akaevgeniy.mesto.nomoredomains.work',
-  authorization: 'Bearer ' + localStorage.getItem('jwt'),
-  ContentType: 'application/json',
+  headers: {
+  'Content-Type': 'application/json',
+  }
 });

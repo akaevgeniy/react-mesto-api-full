@@ -49,6 +49,7 @@ function App() {
   const parseError = (err) => {
     console.log(err);
   };
+  const [token, setToken] = useState(null);
   //метод для проверки токена в браузере, если есть токен и сверен с токеном из сервера, пользователь авторизован
   const checkToken = () => {
     const jwt = localStorage.getItem('jwt');
@@ -60,13 +61,10 @@ function App() {
       .then((user) => {
         setUserInfo({ ...userInfo, email: user.data.email });
         setLoggedIn(true);
+        setToken(jwt);
       })
       .catch((err) => parseError(err));
   };
-  //эффект, срабатывает один раз, проверяя наличие токена после монтирования
-  useEffect(() => {
-    checkToken();
-  }, []);
   //функция, формирующая данные для попапа с ошибкой, вызывааем при неудачной регистрации
   const createErrorTooltip = () => {
     setTooltipContent({
@@ -88,7 +86,8 @@ function App() {
       .then((user) => {
         setLoggedIn(true);
         setUserInfo({ email: data.email });
-        localStorage.setItem('jwt', user.token);
+        localStorage.setItem('jwt', user.token)
+        setToken(localStorage.getItem('jwt'));
       })
       .catch(() => {
         createErrorTooltip();
@@ -119,18 +118,22 @@ function App() {
       email: '',
     });
     setLoggedIn(false);
+    setToken(null);
     history.push('/sign-in');
   };
   //создаем эффект, изменяющий при монтировании стейты на данные из сервера
   useEffect(() => {
     //Загружаем информацию о пользователе и карточках с сервера, объединенно вызываем запросы с Api, обновляем стейты
-    Promise.all([api.getUserProfile(), api.getInitialCards()])
+   checkToken();
+    if (token) {
+      Promise.all([api.getUserProfile(), api.getInitialCards()])
       .then(([userData, placeCards]) => {
         setCurrentUser(userData.data);
         setCards(placeCards.data.reverse());
       })
       .catch((err) => parseError(err));
-  }, [loggedIn]);
+    }   
+  }, [token]);
   //Функция для постановки/снятия лайка
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -218,8 +221,8 @@ function App() {
     api
       .addNewCard({ name, link })
       .then((newPlace) => {
-        setCards([newPlace.data, ...cards]);
-        closeAllPopups();
+      setCards([newPlace.data, ...cards]);
+      closeAllPopups();
       })
       .catch((err) => parseError(err));
   };
